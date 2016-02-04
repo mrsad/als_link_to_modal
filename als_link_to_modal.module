@@ -1,0 +1,108 @@
+<?php
+
+/**
+ * @file als_link_to_modal.module
+ * TODO: Enter file description here.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function als_link_to_modal_menu() {
+  $items = array();
+  
+  $items['admin/config/content/als_link_to_modal'] = array(
+    'title' => 'Link To Modal processing',
+    'description' => 'Configure settings for Als Link To Modal.',
+    'page callback' => 'als_link_to_modal_settings_table',
+    'access arguments' => array('administer als_link_to_modal'),
+    'file' => 'als_link_to_modal.admin.inc',
+  );
+  $items['admin/config/content/als_link_to_modal/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+  $items['admin/config/content/als_link_to_modal/add'] = array(
+    'title' => 'Add Link To Modal URL',
+    'description' => 'Add new URL Als Link To Modal.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('als_link_to_modal_settings_form'),
+    'access arguments' => array('administer als_link_to_modal'),
+    'type' => MENU_LOCAL_ACTION,
+    'weight' => 1,
+    'file' => 'als_link_to_modal.admin.inc',
+  );
+  $items['admin/config/content/als_link_to_modal/%als_link_to_modal_url'] = array(
+    'title callback' => 'als_link_to_modal_admin_format_title',
+    'title arguments' => array(4),
+    'description' => 'Edit URL Als Link To Modal.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('als_link_to_modal_settings_form', 4),
+    'access arguments' => array('administer als_link_to_modal'),
+    'file' => 'als_link_to_modal.admin.inc',
+  );
+  $items['admin/config/content/als_link_to_modal/%als_link_to_modal_url/delete'] = array(
+    'title callback' => 'als_link_to_modal_admin_format_title',
+    'title arguments' => array(4),
+    'description' => 'Delete URL Als Link To Modal.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('als_link_to_modal_settings_delete', 4),
+    'access arguments' => array('administer als_link_to_modal'),
+    'file' => 'als_link_to_modal.admin.inc',
+  );
+
+  return $items;
+}
+
+function als_link_to_modal_url_load($url_id) {
+  $rows = variable_get('als_link_to_modal_settings', []);
+  foreach ($rows as $row) {
+    if (str_replace('/', '-', $row[0]) == $url_id) {
+      return $row;
+    }
+  }
+  return false;
+}
+
+function als_link_to_modal_admin_format_title($row) {
+  return 'Edit "'.$row[0].'" Link';
+}
+
+/**
+ * Implements hook_permission().
+ */
+function als_link_to_modal_permission() {
+  $permissions = array();
+  
+  $permissions['administer als_link_to_modal'] = array(
+    'title' => t('TODO: enter permission title'),
+    'description' => t('TODO: enter permission description'),
+  );
+  return $permissions;
+}
+
+/**
+ * Implements template_preprocess_page().
+ */
+function als_link_to_modal_preprocess_page(&$variables) {
+  $mobile_device = false;
+  if (module_exists('mobile_theme')) {
+    // Retrieve the detection method.
+    $method = variable_get('mobile_theme_detection', 'mobile_theme_detect_php');
+    // If the detection method cannot be found, revert to default
+    if (!function_exists($method)) {
+      $method = "mobile_theme_detect_php";
+    }
+    // Check if this is a mobile.
+    $mobile_device = $method();
+  }
+  $rows = variable_get('als_link_to_modal_settings', []);
+  if (empty($rows))
+    return;
+  foreach ($rows as $key => $row) {
+    if ($mobile_device && $row[4] == 0)
+      continue;
+    drupal_add_js(array('als_link_to_modal' => array($key => $row)), 'setting');
+  }
+  drupal_add_js(drupal_get_path('module', 'als_link_to_modal') .'/als_link_to_modal.js');
+}

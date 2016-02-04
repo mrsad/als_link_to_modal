@@ -1,0 +1,6 @@
+name = Als Link To Modal
+description = TODO: Description of module
+core = 7.x
+dependencies[] = mobile_theme
+files[] = tests/als_link_to_modal.test
+configure = admin/config/content/als_link_to_madal
