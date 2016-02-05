@@ -55,7 +55,7 @@ function als_link_to_modal_menu() {
 }
 
 function als_link_to_modal_url_load($url_id) {
-  $rows = variable_get('als_link_to_modal_settings', []);
+  $rows = variable_get('als_link_to_modal_settings', array());
   foreach ($rows as $row) {
     if (str_replace('/', '-', $row[0]) == $url_id) {
       return $row;

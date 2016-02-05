@@ -7,7 +7,7 @@
 
 function als_link_to_modal_settings_table() {
   $header = array('URL', 'Ajax/Modal URL', 'jQuery Selector', 'Add Classes', 'Apply to Mobile', 'Operations');
-  $rows = variable_get('als_link_to_modal_settings', []);
+  $rows = variable_get('als_link_to_modal_settings', array());
   foreach ($rows as &$row) {
     $row[] = l(t('Edit'), 'admin/config/content/als_link_to_modal/'.str_replace('/', '-', $row[0])).' / '.l(t('Delete'), 'admin/config/content/als_link_to_modal/'.str_replace('/', '-', $row[0]).'/delete'); 
   }
@@ -18,7 +18,7 @@ function als_link_to_modal_settings_table() {
 /**
  * Form builder.
  */
-function als_link_to_modal_settings_form($form, &$form_state, $row = []) {
+function als_link_to_modal_settings_form($form, &$form_state, $row = array()) {
   
   $form['#row'] = $row;
   
@@ -68,7 +68,7 @@ function als_link_to_modal_settings_form_submit($form, &$form_state) {
   $rmrow = $form['#row'];
   
   $v = $form_state['values'];
-  $rows = variable_get('als_link_to_modal_settings', []);
+  $rows = variable_get('als_link_to_modal_settings', array());
   $found = false;
   foreach ($rows as $key => $row) {
     if ($row[0] == $v['url']) {
@@ -110,7 +110,7 @@ function als_link_to_modal_settings_delete($form, &$form_state, $row) {
  */
 function als_link_to_modal_settings_delete_submit($form, &$form_state) {
   $rmrow = $form['#row'];
-  $rows = variable_get('als_link_to_modal_settings', []);
+  $rows = variable_get('als_link_to_modal_settings', array());
   foreach ($rows as $key => $row) {
     if ($row[0] == $rmrow[0]) {
       unset($rows[$key]);
