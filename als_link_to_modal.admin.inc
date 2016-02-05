@@ -73,7 +73,7 @@ function als_link_to_modal_settings_form_submit($form, &$form_state) {
   foreach ($rows as $key => $row) {
     if ($row[0] == $v['url']) {
       $found = true;
-      $rows[$key] = [ $v['url'], $v['url_to'], $v['selector'], $v['classes'], $v['mobile'] ];
+      $rows[$key] = array( $v['url'], $v['url_to'], $v['selector'], $v['classes'], $v['mobile'] );
       break;
     }
   }
@@ -84,7 +84,7 @@ function als_link_to_modal_settings_form_submit($form, &$form_state) {
         break;
       }
     }
-    $row = [ $v['url'], $v['url_to'], $v['selector'], $v['classes'], $v['mobile'] ];
+    $row = array( $v['url'], $v['url_to'], $v['selector'], $v['classes'], $v['mobile'] );
     $rows[] = $row;
   }
   variable_set('als_link_to_modal_settings', $rows);
