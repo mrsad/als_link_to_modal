@@ -96,7 +96,7 @@ function als_link_to_modal_preprocess_page(&$variables) {
     // Check if this is a mobile.
     $mobile_device = $method();
   }
-  $rows = variable_get('als_link_to_modal_settings', []);
+  $rows = variable_get('als_link_to_modal_settings', array());
   if (empty($rows))
     return;
   foreach ($rows as $key => $row) {
